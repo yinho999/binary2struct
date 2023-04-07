@@ -30,7 +30,7 @@ where
     let encode_binary: Vec<u8> = bincode::serialize(&obj).unwrap();
     file.write_all(&encode_binary).unwrap();
 }
-pub fn read_from_file<'a, T>(file_path: &'a Path)
+pub fn read_from_file<'a, T>(file_path: &'a Path) -> T
 where
     T: Serialize + for<'de> Deserialize<'de> + PartialEq + Debug,
 {
@@ -38,7 +38,7 @@ where
     let mut buffer = Vec::new();
     file.read_to_end(&mut buffer).unwrap();
     let decode_binary: T = bincode::deserialize(&buffer).unwrap();
-    println!("{:?}", decode_binary);
+    decode_binary
 }
 #[cfg(test)]
 mod tests {
@@ -64,6 +64,7 @@ mod tests {
     #[serial]
     fn test_read_from_file() {
         let file_path = Path::new("person.bin");
-        read_from_file::<Person>(file_path);
+        let person = read_from_file::<Person>(file_path);
+        println!("{:?}", person);
     }
 }

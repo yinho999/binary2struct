@@ -15,5 +15,6 @@ fn main() {
     };
     let file_path = Path::new("person.bin");
     write_to_file(person, file_path);
-    read_from_file::<Person>(file_path);
+    let person = read_from_file::<Person>(file_path);
+    println!("{:?}", person);
 }
